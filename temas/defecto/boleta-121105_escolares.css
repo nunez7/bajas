@@ -1,0 +1,170 @@
+/*Hoja de estilo para la versión de boleta de calificaciones descrita en el nombre yyMMdd*/
+body
+{
+	background: none;
+	font-size: 14px;
+	margin: 1em auto;
+	text-align: center;
+	width: 700px;
+}
+div.documento
+{
+	height:800px;
+	margin-bottom:80px;
+	padding-bottom: 50px;
+	padding-top:100px;
+}
+div.documento-requi-titulacion
+{
+	height:800px;
+	margin-bottom:80px;
+	padding-bottom: 50px;
+}
+h1
+{
+	font-size: 1.5em;
+	margin: 0;
+}
+li
+{
+	display: inline-block;
+	list-style: none;
+	vertical-align: top;
+	width: 48%;
+}
+section.nomeclatura
+{
+	margin: .5em 0;
+}
+section.nomeclatura table
+{
+	font-size: .7em;
+}
+table
+{
+	width: 99.5%;
+}
+td
+{
+	border: 1px solid #444;
+	padding: 0 .3em;
+}
+td.bold{
+	font-weight: bold;
+}
+td.fondo-gris, .title-requisito{
+    background-color: #dbdbdb;
+}
+.requisito{
+    display: inline-block;
+    border: #444 solid 1px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 340px;
+    height: 122px;
+    margin: 3px;
+}
+
+.minuscula{
+    display: inline-block;
+    text-align: center;
+    text-transform: lowercase;
+    margin: -1px;
+}
+
+.estatus-requisito{
+    font-size: 14px;
+    padding: 28px;
+}
+.description-requisito{
+    font-size: 12px;
+}
+.title-requisito{
+    font-weight: bold;
+    margin: .5px;
+    border-top:  #444 solid 1px;
+}
+td.derecha, .derecha
+{
+	text-align: right;
+}
+td.izquierda
+{
+	text-align: left;
+}
+#calificaciones
+{
+	margin: 1em 0;
+}
+#calificaciones table
+{
+	border: 3px solid #444;
+}
+#calificaciones table thead
+{
+	background: #none;
+}
+#calificaciones td, #calificaciones th
+{
+	border: 1px solid #444;
+	padding: .3em;
+}
+#calificaciones th
+{
+	font-size: 1em;
+	font-weight: bold;
+}
+#datos, .datos
+{
+	margin: 1em 0;
+	text-align: left;
+}
+#datos table td
+{
+	padding: .3em;
+}
+#fecha
+{
+	text-align: right;
+}
+#fecha span
+{
+}
+#firmas
+{
+	padding: 0;
+}
+#firmas div
+{
+	display: inline-block;
+	vertical-align: top;
+}
+#firmas h5
+{
+	margin: 0;
+	padding: 0;
+}
+#firmas div.firma
+{
+	margin-right: 3%;
+	width: 60%;
+}
+#firmas div.firma div.linea
+{
+	border-top: 2px solid #333;
+	margin: 0;
+	padding: 0;
+}
+#firmas div.firma img
+{
+	height: 4.8em;
+	margin: 0 10%;
+}
+#firmas div.sello
+{
+
+	border-top: 2px solid #333;
+	margin-left: 3%;
+	margin-top: 5em;
+	width: 25%;
+}
