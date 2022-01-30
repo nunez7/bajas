@@ -19,7 +19,6 @@
         int cvePersona = usuario.getCvePersona();
         Carrera carrera = new Carrera(usuario.getCveCarrera());
         carrera.construir();
-        String division =  carrera.getDivision();
         
         Datos siest = new Datos();
         //consulta para traerse las solicitudes de baja

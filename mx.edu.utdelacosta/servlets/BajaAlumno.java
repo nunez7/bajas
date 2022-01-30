@@ -17,7 +17,6 @@ import mx.edu.utdelacosta.*;
  *
  * @author Kompanhero, @update nunez7
  */
-@WebServlet(name = "BajaAlumno", urlPatterns = {"/bajaAlumno"})
 public class BajaAlumno extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -36,10 +35,7 @@ public class BajaAlumno extends HttpServlet {
         if (sesion.getAttribute("usuario") == null) {
             response.sendRedirect("login.jsp");
         } else {
-            try{
-                Usuario usuario = (Usuario) sesion.getAttribute("usuario");
-                Datos dexter = new Datos();
-                
+            try{                
                 BajaSolicitud bajaSolicitud = new BajaSolicitud();
                 Grupo grupo = new Grupo();
                 String accion = parser.getStringParameter("action", null);
@@ -53,7 +49,6 @@ public class BajaAlumno extends HttpServlet {
                 String comentario = "";
                 String estatus = "";
                 int cveBajaSolicitud = 0;
-                System.out.println("Accion: " + accion);
                 switch(accion) {
                     case "solicitud": 
                         cveAlumno = (Integer) sesion.getAttribute("cveAlumno");
@@ -63,11 +58,11 @@ public class BajaAlumno extends HttpServlet {
                         motivo = parser.getStringParameter("motivo", null);
                         comentario = parser.getStringParameter("comentario", null);
                         cveGrupo = parser.getIntParameter("cveGrupo", 0);
-                        int cve_tutor = grupo.getTutorGrupo(cveGrupo);//trae la cve_persona del tutor del grupo
+                        int cveTutor = grupo.getTutorGrupo(cveGrupo);//trae la cve_persona del tutor del grupo
                         //guarda la solicitud de baja en "baja_solicitud"
                         bajaSolicitud.guardarSolicitud(cveAlumno, cvePeriodo, cveTipoBaja, cveCausaBaja, motivo, comentario); 
                         //guarda el estatus de la baja en "baja_estatus"
-                        bajaSolicitud.guardarBajaEstatus(cve_tutor, cveGrupo, cveAlumno, cveTipoBaja); 
+                        bajaSolicitud.guardarBajaEstatus(cveTutor, cveGrupo, cveAlumno, cveTipoBaja); 
                         salida.write("201-save");
                         break;
                     case "cancelar":
@@ -140,7 +135,6 @@ public class BajaAlumno extends HttpServlet {
                     case "noBajas" :
                         cveAlumno = parser.getIntParameter("cveAlumno", 0);
                         int claveAlumno = 0;
-                        System.out.println("cveAlumno: " + cveAlumno);
                         //conexión a base de datos 
                         Datos siest = new Datos();
                         ArrayList<CustomHashMap> tipos = siest.ejecutarConsulta("SELECT CAST(COUNT(bs.cve_baja_solicitud)AS INTEGER) AS bajas " 
@@ -150,7 +144,6 @@ public class BajaAlumno extends HttpServlet {
                                 + " WHERE bs.cve_alumno =" + cveAlumno  
                                 + " AND sb.cve_situacion_baja = '5'");
                         claveAlumno = tipos.get(0).getInt("bajas");
-                        System.out.println("Bajas: " + claveAlumno);
                         salida.write("201-"+claveAlumno);
                         break;
                 }

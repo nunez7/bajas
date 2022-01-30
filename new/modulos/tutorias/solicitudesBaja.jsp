@@ -16,12 +16,17 @@
     RequestParamParser parser = new RequestParamParser(request);
     int tab = parser.getIntParameter("tab", 0);
     int cveModulo = parser.getIntParameter("modulo", 0);
-    if(usuario == null || !usuario.getRol().equals("Profesor") )
+    if(usuario == null)
     {
         response.sendRedirect("../login.jsp");
     }
     //cvePersona en este caso el usuario que se logueo
-    int tutor = usuario.getCvePersona();
+    int tutor = 0;
+	try{
+		tutor = (Integer) sesion.getAttribute("cvePersona");
+	}catch(Exception e){
+		tutor = usuario.getCvePersona();
+	}
     //conexion a b;ase de datos
     Datos siest = new Datos();
     //consulta para traer las solicitudes de acuerdo al tutor y que sean activas

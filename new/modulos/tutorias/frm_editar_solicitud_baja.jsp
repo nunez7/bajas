@@ -25,7 +25,9 @@
         //conexion a b;ase de datos
         Datos siest = new Datos();
         //se trae la bajaSolicitus seleccionada
-        ArrayList<CustomHashMap> solicitud = siest.ejecutarConsulta("SELECT bs.cve_tipo_baja as tipoBaja, bs.motivo as descripcion, TO_CHAR(bs.fecha_alta, 'DD/MM/YYYY') as fecha, bs.cve_alumno as alumno, bs.asistio_clase "
+        ArrayList<CustomHashMap> solicitud = siest.ejecutarConsulta("SELECT bs.cve_tipo_baja as tipoBaja, "
+                + "bs.motivo as descripcion, TO_CHAR(bs.fecha_alta, 'DD/MM/YYYY') as fecha, bs.cve_alumno as alumno, "
+                + "bs.asistio_clase, COALESCE(be.comentario,  '')AS comentario "
                 + "FROM baja_solicitud bs "
                 + "INNER JOIN baja_estatus be "
                 + "ON bs.cve_baja_solicitud=be.cve_baja_solicitud "
@@ -45,49 +47,43 @@
 %>
 
 <form id="frm-actualizar-baja"> 
-    <legend>Edición</legend>
+    <legend>Solicitud de baja</legend>
     <ol>
-        <li class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <label>Fecha</label>
-                    <input type="text" id="fechaAlta" class="form-control" value="<%=solicitud.get(0).getString("fecha")%>" disabled>
-                </div>
-                <div class="col-md-4">
-                    <label>Tipo de baja</label>
-                    <select id="cveTipoBaja" class="form-control" disabled>
-                        <%
-                            if (solicitud.get(0).getInt("tipobaja") == 1) {
-                        %>
-                        <option value="">Temporal</option>
-                        <%
-                        } else {
-                        %>
-                        <option value="">Definitiva</option>
-                        <%
-                            }
-                        %>
-                    </select>
-                </div>
+        <li class="row">
+            <div class="col-md-4">
+                <label>Fecha de solicitud</label>
+                <input type="text" id="fechaAlta" class="form-control" value="<%=solicitud.get(0).getString("fecha")%>" disabled>
+            </div>
+            <div class="col-md-4">
+                <label>Fecha asistio a clases</label>
+                <input type="date"  id="fechaAsistioClase" class="form-control" value="<%=solicitud.get(0).get("asistio_clase")%>">
+            </div>
+            <div class="col-md-4">
+                <label>Tipo de baja</label>
+                <select id="cveTipoBaja" class="form-control" disabled>
+                    <option value=""><%=solicitud.get(0).getInt("tipobaja") == 1 ? "Temporal" : "Definitiva"%></option>
+                </select>
             </div>
         </li>
-        <li class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <label>Motivo</label> <br>
-                    <textarea id="motivoBs" rows="2" cols="150" maxlength="500" style="resize:none;"readonly><%=solicitud.get(0).getString("descripcion")%></textarea>
-                </div>
-                <div class="col-md-6">
-                    <label>Seguimiento </label> <br>
-                    <textarea id="comentario"  rows="2" cols="150" maxlength="500" style="resize:none;" value="" placeholder="" title="Comentarios del tutor"></textarea>
-                </div>
+        <li class="row">
+            <div class="col-md-4">
+                <label class="d-block">Nombre</label>
+                <%=alumno.getNombreCompleto()%>
+            </div>
+            <div class="col-md-4">
+                <label class="d-block">Matricula</label>
+                <%=alumno.getMatricula() %>
             </div>
         </li>
-        <li class="container">
+        <li>
             <div class="row">
-                <div class="col-md-3">
-                    <label>Fecha asistio a clases</label>
-                    <input type="date"  id="fechaAsistioClase" class="form-control" value="<%=solicitud.get(0).get("asistio_clase")%>">
+                <div class="col-md-6">
+                    <label>Motivo de la solicitud</label>
+                    <textarea id="motivoBs" rows="2" cols="150" maxlength="500" readonly><%=solicitud.get(0).getString("descripcion")%></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label>Seguimiento del tutor</label>
+                    <textarea id="comentario" rows="2" cols="150" maxlength="500" title="Comentarios del tutor"><%=solicitud.get(0).getString("comentario")%></textarea>
                 </div>
             </div>
         </li>
@@ -96,19 +92,19 @@
 <!-- se despliega si el tutor quiere registrar una tutoria -->
 <form id="frm-guardarTutoria">
     <ol>
-        <li>
         <legend>Tutoría</legend>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="fecha_atendio">Fecha</label>
-                <input type="date" name="fechaAtendio" id="fecha_atendio" class="form-control" value="<%=fechaHoy%>" max="<%=fechaHoy%>" title="Fecha de atenci&oacute;n"/> &nbsp;&nbsp;&nbsp;
+        <li>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="fecha_atendio">Fecha</label>
+                    <input type="date" name="fechaAtendio" id="fecha_atendio" class="form-control" value="<%=fechaHoy%>" max="<%=fechaHoy%>" title="Fecha de atenci&oacute;n"/> &nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="col-md-3">
+                    <label for="fecha_atendio">Hora</label>
+                    <input type="time" name="horaAtendio" id="hora_atendio" class="form-control" value="<%=horaHoy%>" title="Hora de atenci&oacute;n" />
+                </div>
+                <input type="hidden" name="cveAlumno" id="cveAlumno" value="<%=cveAlumno%>">
             </div>
-            <div class="col-md-3">
-                <label for="fecha_atendio">Hora</label>
-                <input type="time" name="horaAtendio" id="hora_atendio" class="form-control" value="<%=horaHoy%>" title="Hora de atenci&oacute;n" />
-            </div>
-            <input type="hidden" name="cveAlumno" id="cveAlumno" value="<%=cveAlumno%>">
-        </div>
         </li>
         <li>
             <label>Motivo(s)</label>
@@ -139,7 +135,7 @@
         <li>
             <label>Descripci&oacute;n</label>
             <br />
-            <table>
+            <table class="table">
                 <tr>
                     <th>Valoraci&oacute;n del profesor</th>
                     <th>Descripci&oacute;n de la problem&aacute;tica</th>
@@ -185,7 +181,7 @@
                         for (CustomHashMap nd : nivelesDesercion) {
                     %>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input cnd" <%if (nd.getString("descripcion").equals("Bajo")) {%>checked<%}%> 
+                        <input class="form-check-input cnd" <%if (nd.getString("descripcion").equals("Alto")) {%>checked<%}%> 
                                type="radio" name="nivelDesercion" id="nd-<%=nd.getInt("cve_nivel_desercion")%>" 
                                value="<%=nd.getInt("cve_nivel_desercion")%>" required>
                         <label class="form-check-label" for="nd-<%=nd.getInt("cve_nivel_desercion")%>">
@@ -221,10 +217,9 @@
         function res(data) {
             var datos = data.split("-");
             if (datos [0] === "401") {
-                mensaje("no se encontro la ruta");
+                mensaje("No se encontro la ruta");
             } else if (datos[0] === "201") {
-                console.log("Se actualizo la solicitud");//mensaje que será enviado
-                //location.href = "?modulo=192&tab=245";
+                mensaje("Datos actualizados");
             } else {
                 console.log("Algo salió feo :( -- " + data);
             }
@@ -234,11 +229,11 @@
     //envio del formulario 
     $("#frm-guardarTutoria").submit(function (e) {
         e.preventDefault();
-        $('input[type="submit"]').prop('disabled', true);
         //se trael el valor del boton presionado
-        var action = $(this).find("input[type=submit]:focus").val();
+        var action = $(document.activeElement).attr('id');
+        //console.log("ID: "+$(document.activeElement).attr('id'));
         var estatus = "rechazada";
-
+        $('input[type="submit"]').prop('disabled', true);
         var seleccionados = $('input:checkbox:checked').length;
         if (seleccionados <= 0)
         {
@@ -266,7 +261,7 @@
                     if (datos[0] === "401") {
                         mensaje("no se encontro la ruta");
                     } else if (datos[0] === "201") {
-                        if (action.trim() === "Rechazar") {
+                        if (action == "rechazar") {
                             estatusSolicitud(estatus);
                         } else {
                             estatus = "aceptada";
@@ -296,7 +291,7 @@
         function res(data) {
             var datos = data.split("-");
             if (datos[0] === "401") {
-                mensaje("no se encontro la ruta");
+                mensaje("No se encontro la ruta");
             } else if (datos[0] === "201") {
                 mensaje("Datos guardados");
                 location.href = "?modulo=192&tab=245";
@@ -305,7 +300,7 @@
             }
         }
     }
-    
+
     //funcion para obtener el usuario del alumno
     $.post("../obtenerUsuario", "cvePersona=<%=cvePersona%>", res).fail(error);
     function res(data) {

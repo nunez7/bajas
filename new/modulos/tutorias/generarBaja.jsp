@@ -37,15 +37,10 @@
         Datos siest = new Datos();
         //causas de la baja
         ArrayList<CustomHashMap> causas = siest.ejecutarConsulta("SELECT cve_causa_baja, causa "
-                + "FROM causa_baja where activo = 'True'");
-
-        ArrayList<CustomHashMap> nivelesDesercion = siest.ejecutarConsulta("SELECT cve_nivel_desercion, descripcion FROM nivel_desercion WHERE activo=true");
+                + "FROM causa_baja where activo = 'True' ORDER BY causa");
 
         CarearFecha cf = new CarearFecha();
         String fechaHoy = cf.hoy();
-        String horaHoy = cf.getHoraHoy();
-        Periodo p = new Periodo(usuario.getCvePeriodo());
-        String fechaIn = p.getFechaInicio();
 %>
 
 <form id="form-gen-baja">
@@ -90,8 +85,6 @@
                             function res(data) {
                                 var datos = data.split("-");
                                 if(datos[1] === "0"){
-                                   console.log("temporal");
-                                   console.log($("#cvePersona").val());
                                    $("#cveTipoBaja").remove();
                                    $("#temporal").remove();
                                    $("#definitiva").remove();
@@ -100,8 +93,6 @@
                                    //aqui quiero asignar el valor 
                                 } else if (datos[1] > "0") {
                                     //aqui quiero asignar el valor 
-                                    console.log("Definitiva");
-                                    console.log($("#cvePersona").val());
                                     $("#cveTipoBaja").remove();
                                     $("#temporal").remove();
                                     $("#definitiva").remove();
@@ -146,8 +137,8 @@
                     <textarea id="motivo" name="motivo" rows="2" cols="80" maxlength="350" style="resize:none;" required title="Motivo" placeholder="Escribe el motivo de la baja"></textarea>
                 </div>
                 <div class="col-md-6">
-                    <label for="comentario">Comentario</label>
-                    <textarea id="comentario" name="comentario" rows="2" cols="80" maxlength="350" style="resize:none;" required title="Comentario" placeholder="Escribe un comentario."></textarea>
+                    <label for="comentario">Comentario de tutor</label>
+                    <textarea id="comentario" name="comentario" rows="2" cols="80" maxlength="350" style="resize:none;" required title="Comentario" placeholder="Escribe un comentario.">Ninguno</textarea>
                 </div>
             </div>
         </li>
@@ -173,18 +164,6 @@
     $("#form-gen-baja").submit(function (e){
         e.preventDefault();
         $('input[type="submit"]').attr('disabled','disabled');
-        console.log("entro a la funcion");
-        var parametros = {
-            cvePersona : <%=cvePersona%>,
-            cvePeriodo : <%=cvePeriodo%>,
-            cveAlumno : $("#cvePersona").val(),
-            cveTipoBaja : $("#cveTipoBaja").val(),
-            cveCausaBaja : $("#cveCausaBaja").val(),
-            comentario: $("#comentario").val(),
-            motivo : $("#motivo").val(),
-            fechaAsistio: $("#fechaAsistioClase").val(),
-            action: 'registroBaja'
-        };
         $.post("../bajaAlumno", $(this).serialize(), res).fail(error);
         function res(data) {
             var datos = data.split("-");

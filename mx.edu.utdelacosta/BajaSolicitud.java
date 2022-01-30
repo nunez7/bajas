@@ -58,15 +58,14 @@ public class BajaSolicitud implements Serializable{
         //se envía el correo al director de la carrera
         Alumno alumno = new Alumno(cveAlumno);
             //traemos la clave de la carrera a travez del objeto alumno
-            int cveCarrera = alumno.getCarreraAlumno().getCveCarrera();
             //creamos un objeto de carrera
-            Carrera carrera = new Carrera(cveCarrera);
+            Carrera carrera = new Carrera(alumno.getCarreraAlumno().getCveCarrera());
             //creamos un objeto de persona y traemos su e-mail
-            Persona director = carrera.getDirectorCarrera(cveCarrera);
+            Persona director = carrera.getDirectorCarrera(alumno.getCarreraAlumno().getCveCarrera());
             //director.getEmail();
             String contenido = "<p><strong>Hay una nueva solicitud de baja aprobaba por tutor</strong><br />"
                    + "Para más detalles valla a su panel de director apartado solicitudes de baja.</p>";
-            EnviarCorreo ec = new EnviarCorreo("utcsoporte@gmail.com", "hernandezcontrerasraul4@gmail.com", "Solicitud de baja", "Solicitud de baja", contenido);
+            EnviarCorreo ec = new EnviarCorreo("utcsoporte@gmail.com", director.getEmail(), "Solicitud de baja", "Solicitud de baja", contenido);
             ec.enviar();
     }
     

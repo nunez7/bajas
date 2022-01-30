@@ -41,7 +41,7 @@
                     + "LEFT JOIN situacion_baja sb "
                     + "ON be.cve_situacion_baja = sb.cve_situacion_baja "
                     + "RIGHT JOIN alumno_grupo ag "
-                    + "ON ag.cve_alumno = a.cve_alumno "
+                    + "ON ag.cve_alumno = a.cve_alumno AND ag.cve_periodo=bs.cve_periodo "
                     + "RIGHT JOIN grupo g "
                     + "ON g.cve_grupo = ag.cve_grupo "
                     + "INNER JOIN carrera c "
@@ -50,7 +50,7 @@
                     + "ON d.cve_division = c.cve_division "
                     + "WHERE be.activo = 'True' "
                     + "AND sb.cve_situacion_baja = 5 "
-                    + "AND bs.fecha_alta BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "' "
+                    + "AND bs.cve_periodo = "+usuario.getCvePeriodo()+" "
                     + "ORDER BY c.nombre DESC");
         
 %>

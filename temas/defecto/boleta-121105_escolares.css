@@ -73,6 +73,10 @@ td.fondo-gris, .title-requisito{
 }
 
 .estatus-requisito{
+    font-size: 18px;
+    padding: 34px;
+}
+.estatus-req{
     font-size: 14px;
     padding: 28px;
 }

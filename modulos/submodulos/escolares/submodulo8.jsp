@@ -23,28 +23,17 @@
                     + "a.matricula, tb.tipo as tipobaja, cb.causa as causa, bs.motivo, bs.comentario, g.nombre as grupo, "
                     + "TO_CHAR(bs.fecha_alta, 'DD/MM/YYYY') as fecha, sb.descripcion as estado, c.nombre as carrera, a.cve_alumno, bs.cve_baja_solicitud "
                     + "FROM baja_solicitud bs "
-                    + "INNER JOIN alumno a "
-                    + "ON bs.cve_alumno = a.cve_alumno "
-                    + "LEFT JOIN persona p "
-                    + "ON a.cve_persona = p.cve_persona "
-                    + "INNER JOIN tipo_baja tb "
-                    + "ON bs.cve_tipo_baja = tb.cve_tipo_baja "
-                    + "INNER JOIN causa_baja cb "
-                    + "ON bs.cve_causa_baja = cb.cve_causa_baja "
-                    + "INNER JOIN baja_estatus be "
-                    + "ON bs.cve_baja_solicitud = be.cve_baja_solicitud "
-                    + "LEFT JOIN situacion_baja sb "
-                    + "ON be.cve_situacion_baja = sb.cve_situacion_baja "
-                    + "RIGHT JOIN alumno_grupo ag "
-                    + "ON ag.cve_alumno = a.cve_alumno "
-                    + "RIGHT JOIN grupo g "
-                    + "ON g.cve_grupo = ag.cve_grupo "
-                    + "INNER JOIN carrera c "
-                    + "ON c.cve_carrera = g.cve_carrera "
-                    + "INNER JOIN division d "
-                    + "ON d.cve_division = c.cve_division "
-                    + "WHERE be.activo = 'True' "
-                    + "AND sb.cve_situacion_baja = 3 "
+                    + "INNER JOIN alumno a ON bs.cve_alumno = a.cve_alumno "
+                    + "INNER JOIN persona p ON a.cve_persona = p.cve_persona "
+                    + "INNER JOIN tipo_baja tb ON bs.cve_tipo_baja = tb.cve_tipo_baja "
+                    + "INNER JOIN causa_baja cb ON bs.cve_causa_baja = cb.cve_causa_baja "
+                    + "INNER JOIN baja_estatus be ON bs.cve_baja_solicitud = be.cve_baja_solicitud "
+                    + "INNER JOIN situacion_baja sb ON be.cve_situacion_baja = sb.cve_situacion_baja "
+                    + "INNER JOIN alumno_grupo ag ON ag.cve_alumno = a.cve_alumno AND ag.cve_periodo=bs.cve_periodo "
+                    + "INNER JOIN grupo g ON g.cve_grupo = ag.cve_grupo "
+                     + "INNER JOIN carrera c ON c.cve_carrera = g.cve_carrera "
+                    + "INNER JOIN division d ON d.cve_division = c.cve_division "
+                    + "WHERE be.activo = 'True' AND sb.cve_situacion_baja = 3  "
                     + "ORDER BY c.nombre DESC");
         
 %>
@@ -149,4 +138,3 @@
     //llave de cierre de if de usuario
     }
 %>
-

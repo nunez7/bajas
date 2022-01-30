@@ -125,11 +125,7 @@
             <li>
             <!-- se agrega el tipo de baja -->
             <%
-                if(alumno.isActivo()){
-                    %>
-                    
-                    <%
-                } else {
+                if(!alumno.isActivo()){
                     //se trae las bajas del alumno
                     ArrayList<CustomHashMap> tipos = siest.ejecutarConsulta("SELECT bs.cve_baja_solicitud "
                                 + "FROM baja_solicitud bs "
@@ -142,15 +138,7 @@
                                 + "AND sb.cve_situacion_baja = '5'");
                     %> 
                     <label><strong>Tipo de baja:</strong></label>
-                    <%
-                    if(tipos.size() == 1) {
-                        %><span class="roja">Temporal</span><%
-                    }
-                    if(tipos.size() == 2){
-                        %><span class="roja">Definitiva</span><%
-                    }
-            }
-            %>
+                    <span class="roja"><%=tipos.size() == 1 ? "Temporal":"Definitiva"%></span>
             </li>
         </ol>
 
@@ -306,7 +294,6 @@
                             <%
                                 int n = 0;
                                 for (CustomHashMap d : datos) {
-                                    String estado = d.getString("estado");
                             %>
                             <tr>
                                 <td><%=++n%></td>
